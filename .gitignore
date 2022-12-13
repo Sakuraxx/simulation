@@ -3,3 +3,4 @@ data
 ksp/.vscode
 ksp/src/*.o
 ksp/main
+delete.py
