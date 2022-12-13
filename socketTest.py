@@ -10,18 +10,16 @@ from myTopo import *
 import os
 from constant import *
 
-def main():
-    lg.setLogLevel('info')
-
+def recreateSignalFile():
     # 重新建立客户端信号文件
     if os.path.exists(SINGAL_FILE):
         os.remove(SINGAL_FILE)
     file = open(SINGAL_FILE,'w')
     file.close()
 
-    M = 3
-    CACHE_MODE = "ksp"
-    # CACHE_MODE = "cloud"
+def run(mode, t):
+    lg.setLogLevel('info')
+    recreateSignalFile()
 
     net = Mininet(MECTopo(n=M))
     net.start()
@@ -39,9 +37,11 @@ def main():
     # 开启服务器
     info('\nStart all servers\n')
     cloud = net.get('cloud')
-    cloud.cmd('sudo python3 flask_server.py -i %s  -c %s & ' % (cloud.IP(), CACHE_MODE))
+    cloud.cmd('sudo python3 flask_server.py -i %s -c %s -t %s &'
+                                    % (cloud.IP(), mode, t))
     for mec in mlist:
-        serverInfo = mec.cmd('sudo python3 flask_server.py -i %s  -c %s &' % (mec.IP(), CACHE_MODE))
+        serverInfo = mec.cmd('sudo python3 flask_server.py -i %s -c %s -t %s &'
+                                    % (mec.IP(), mode, t))
         info(serverInfo)
 
     time.sleep(5) # 暂停一下 等待服务器端处于运行状态
@@ -51,8 +51,8 @@ def main():
     for i in range(M):
         user = ulist[i]
         homeMEC = mlist[i]
-        clientInfo = user.cmd('sudo python3 flask_client.py -i %s -u %s -c %s &' #后台运行
-                                % (homeMEC.IP(), user.IP(), CACHE_MODE))
+        clientInfo = user.cmd('sudo python3 flask_client.py -i %s -u %s -c %s -t %s &' #后台运行
+                                % (homeMEC.IP(), user.IP(), mode, (t + 1))) # 客户端使用下一轮的请求
         info(clientInfo)
 
     while True:
@@ -64,12 +64,10 @@ def main():
     info('Stop simultaion.\n')
     net.stop()
 
-
 def wc_count(file_name):
     import subprocess
     out = subprocess.getoutput("wc -l %s" % file_name)
     return int(out.split()[0])
 
-
 if __name__ == '__main__':
-    main()
+    run("ksp", 0)

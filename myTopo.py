@@ -9,17 +9,6 @@ from mininet.link import TCIntf, TCLink
 from mininet.node import Host, Node
 from constant import *
 
-# 链路带宽 Mbit
-_1MB = 1
-UM_BW = _1MB * 10
-MM_BW = _1MB * 100
-MD_BW = _1MB * 1000
-
-# 延迟
-UM_DELAY = '1ms'
-MM_DELAY = '2ms'
-MD_DELAY = '50ms'
-
 class MECTopo(Topo):
     "MEC cooperative network"
     def build(self, n=3):

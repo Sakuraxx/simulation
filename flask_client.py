@@ -12,18 +12,18 @@ parser.add_option('-i', dest='ip', default='127.0.0.1')
 parser.add_option('-p', dest='port', type='int', default=15005)
 parser.add_option('-u', dest='uIP') # 客户端(本地)的ip地址
 parser.add_option('-c', dest='cacheMode')
+parser.add_option('-t', dest='turn') # 第几轮
+
 (options, args) = parser.parse_args()
 
 UIP = options.uIP
-RES_FILE = './data/%s_%s.txt' % (UIP, options.cacheMode)
-REQ_FILE = './data/%s.json' % UIP
-
+req_file = REQ_FILE % (UIP, PERIOD, options.turn)
+res_file = RES_FILE % (UIP, options.cacheMode, PERIOD, options.turn)
 
 url = 'http://%s:%s/query/' % (options.ip, options.port)
-# print('[Client] %s' % url)
 
 # 读取请求文件
-with open(REQ_FILE, 'r') as f:
+with open(req_file, 'r') as f:
     reqs = json.load(f)
 
 print('Client %s start...' % UIP)
@@ -45,7 +45,7 @@ for send_dat in reqs:
 
 print('Total Requests: ', len(reqs))
 
-with open(RES_FILE, 'w') as f:
+with open(res_file, 'w') as f:
     # tid len time
     for line in res_arr:
         f.write(line)

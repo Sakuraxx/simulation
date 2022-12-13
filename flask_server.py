@@ -14,10 +14,11 @@ parser = optparse.OptionParser()
 parser.add_option('-i', dest='ip', default='')
 parser.add_option('-p', dest='port', type='int', default=15005)
 parser.add_option('-c', dest='cacheMode')
+parser.add_option('-t', dest='turn') # 第几轮
 (options, args) = parser.parse_args()
 
 LOCAL_IP = options.ip
-CACHE_MODE = options.cacheMode
+mode = options.cacheMode
 
 
 # 生成指定大小比例的数据
@@ -41,7 +42,7 @@ def post_http():
     dat_stream = request.data.decode('utf-8')
     req_dat = json.loads(dat_stream)
     destIP = ""
-    if CACHE_MODE == CLOUD_CACHE: # 直接向云端服务器请求
+    if mode == CLOUD_CACHE: # 直接向云端服务器请求
         destIP = CLOUD_IP
     else:
         destIP = check_cacheTable(req_dat["tid"])
@@ -62,7 +63,8 @@ def fetch_from_other_MEC(dat, ip):
 # 查看缓存表，确定请求路径
 def check_cacheTable(tid):
     destIP = ""
-    with open(CACHE_JSON, 'r') as load_f:
+    cache_json_file = CACHE_JSON % (mode, PERIOD, options.turn)
+    with open(cache_json_file, 'r') as load_f:
         load_dict = json.load(load_f)
         hostIPs = load_dict[tid]
         if len(hostIPs) == 1: # 只有一个IP则为云端服务器
