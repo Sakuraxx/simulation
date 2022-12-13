@@ -25,8 +25,9 @@ MM_DELAY = '2ms'
 MD_DELAY = '50ms'
 
 # 解析缓存文件
-CACHE_TXT = './data/ksp_cache_10_0.txt'
-CACHE_JSON = './data/cache.json'
+CACHE_MODE = ('ksp', 'distributed', 'selfTop', 'mixco')
+CACHE_TXT = './data/%s_cache_%s_%s.txt'
+CACHE_JSON = './data/cache/%s_cache_%s_%s.json'
 
 # 解析请求文件
 DN_FILE = './data/dn_%s_%s.txt'
