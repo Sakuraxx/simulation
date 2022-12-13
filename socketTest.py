@@ -66,4 +66,11 @@ def run(mode, t):
     net.stop()
 
 if __name__ == '__main__':
-    run("ksp", 1)
+    # modes = [c for c in CACHE_MODE]
+    # modes.append('cloud')
+    # modes = ['selfTop', 'mixco', 'cloud']
+    modes = ['ksp']
+    for mode in modes:
+        for t in range(T - 1):
+            run(mode, t)
+            time.sleep(2)

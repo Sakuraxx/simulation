@@ -39,9 +39,6 @@ SINGAL_FILE = './data/signal.txt'
 VIDEO_FILE = './data/conference.mp4'
 
 # 计算时延节省量
-CLOUD_RES_FILE = './data/10.0.%s.2_cloud.txt'
-KSP_RES_FILE = './data/10.0.%s.2_ksp.txt'
-DIS_RES_FILE = './data/10.0.%s.2_dis.txt'
-SELF_RES_FILE = './data/10.0.%s.2_self.txt'
-MIXCO_RES_FILE = './data/10.0.%s.2_mixco.txt'
+DELAY_RES_FILE = './data/res/10.0.%s.2_%s_%s_%s.txt' # 10.0.0.2_ksp_10_1.txt
 
+ANS_FILE = './data/ans/ans.json'
