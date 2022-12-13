@@ -1,0 +1,5 @@
+__pycache__
+data
+ksp/.vscode
+ksp/src/*.o
+ksp/main

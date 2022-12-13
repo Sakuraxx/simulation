@@ -1,0 +1,61 @@
+<html>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['line']});
+      google.charts.setOnLoadCallback(drawChart);
+      var chart;
+    
+    function drawChart() {
+      fetch('http://127.0.0.1:8080/data.output')
+        .then(response => response.text())
+        .then(text => {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Number of Content');
+        data.addColumn('number', 'KSP');
+        data.addColumn('number', 'Self Top');
+        data.addColumn('number', 'Distributed');
+        data.addColumn('number', 'Mixco');
+
+        outs = text.split(/[\s]/);
+
+        nodes = [];
+        console.log(outs);
+        for(let i = 0; i < outs.length - 9; i += 10) {
+          let ori_payment = parseFloat(outs[i + 5]);
+          console.log(i, parseFloat(outs[i + 4]));
+          nodes.push([parseFloat(outs[i + 4]),
+                      ori_payment - parseFloat(outs[i + 6]), 
+                      ori_payment - parseFloat(outs[i + 7]), 
+                      ori_payment - parseFloat(outs[i + 8]), 
+                      ori_payment - parseFloat(outs[i + 9])]);
+        }
+        console.log(nodes);
+
+
+        data.addRows(nodes);
+        var options = {
+          chart: {
+            title: 'Reduce Time in Different N',
+            subtitle: 'in (ms)'
+          },
+          width: 900,
+          height: 500,
+          axes: {
+            x: {
+              0: {side: 'top'}
+            }
+          }
+        };
+
+        chart = new google.charts.Line(document.getElementById('line_top_x'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+      });
+    }
+
+  </script>
+</head>
+<body>
+  <div id="line_top_x"></div>
+</body>
+</html>
