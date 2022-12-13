@@ -9,6 +9,7 @@ from myTopo import MECTopo
 from myTopo import *
 import os
 from constant import *
+from util import *
 
 def recreateSignalFile():
     # 重新建立客户端信号文件
@@ -64,10 +65,5 @@ def run(mode, t):
     info('Stop simultaion.\n')
     net.stop()
 
-def wc_count(file_name):
-    import subprocess
-    out = subprocess.getoutput("wc -l %s" % file_name)
-    return int(out.split()[0])
-
 if __name__ == '__main__':
-    run("ksp", 0)
+    run("ksp", 1)

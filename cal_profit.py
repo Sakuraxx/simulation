@@ -1,4 +1,5 @@
 from constant import *
+from util import *
 
 # 计算时延节省量
 
@@ -10,11 +11,6 @@ def cal_profit(filename):
             fields = line.split(' ')
             res += int(fields[-1])
     return res
-
-def wc_count(file_name):
-    import subprocess
-    out = subprocess.getoutput("wc -l %s" % file_name)
-    return int(out.split()[0])
 
 def main():
     cloud_res = 0
