@@ -25,9 +25,6 @@ url = 'http://%s:%s/query/' % (options.ip, options.port)
 with open(REQ_FILE, 'r') as f:
     reqs = json.load(f)
 
-# if os.path.exists(RES_FILE):
-#     os.remove(RES_FILE)
-
 print('Client %s start...' % UIP)
 
 res_arr = []
@@ -55,5 +52,5 @@ with open(RES_FILE, 'w') as f:
 
 # 客户端程序运行结束
 with open(SINGAL_FILE, 'a+') as f:
-    f.write(UIP)
+    f.write(UIP + '\n')
     f.flush()
