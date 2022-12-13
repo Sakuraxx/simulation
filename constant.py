@@ -1,6 +1,7 @@
 M = 3
 N = 200
 PERIOD = 10 # 10s
+T = 10 # 轮数
 
 CLOUD_IP = "10.0.200.254"
 MEC_IP = '10.0.%s.1'
@@ -28,9 +29,8 @@ CACHE_TXT = './data/ksp_cache_10_0.txt'
 CACHE_JSON = './data/cache.json'
 
 # 解析请求文件
-P_PATH = './data'
-DN_FILE = 'dn_10_1.txt'
-
+DN_FILE = './data/dn_%s_%s.txt'
+REQ_ROOT = './data/req'
 
 SINGAL_FILE = './data/signal.txt'
 VIDEO_FILE = './data/conference.mp4'
