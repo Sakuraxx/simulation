@@ -17,7 +17,7 @@ def parse_dn_file(t):
             fail_dn[CLIENT_IP % fields[0]].append((fields[1], fields[3]))
 
     for j in range(M):
-        TOT_REQ = 20
+        TOT_REQ = 100
         reqs = []
         IP = CLIENT_IP % j
         for req in pred_dn[IP]:

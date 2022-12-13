@@ -36,10 +36,11 @@ if __name__ == '__main__':
     print(reqCnt)
 
     c_arr = np.array(res['cloud']) / np.array(reqCnt['cloud'])
-    for mode in CACHE_MODE:
+    for mode in modes:
         arr = np.array(res[mode])
         ans = c_arr - arr / reqCnt[mode]
-        ans = np.round(ans, decimals=0)
+        ans = np.round(ans, decimals=0) # 平均时延节省量
+        ans = np.round(ans / c_arr * 100, decimals=0) # 平均时延节省率
         res[mode] = list(ans)
 
     print(res)

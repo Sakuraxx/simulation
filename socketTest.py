@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # modes = [c for c in CACHE_MODE]
     # modes.append('cloud')
     # modes = ['selfTop', 'mixco', 'cloud']
-    modes = ['ksp']
+    modes = ['cloud']
     for mode in modes:
         for t in range(T - 1):
             run(mode, t)
