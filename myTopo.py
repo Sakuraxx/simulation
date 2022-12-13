@@ -1,5 +1,5 @@
-#!/usr/bin/python                                                                            
-                                                                                             
+#!/usr/bin/python
+
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.util import dumpNodeConnections, dumpNetConnections
@@ -7,6 +7,7 @@ from mininet.log import setLogLevel
 from mininet.cli import CLI
 from mininet.link import TCIntf, TCLink
 from mininet.node import Host, Node
+from constant import *
 
 # 链路带宽 Mbit
 _1MB = 1
@@ -49,8 +50,8 @@ def mec2mec(net, M):
             mi.cmd('ifconfig %s %s netmask 255.255.255.0' % (mi_dev, get_mec_ip(i)))
             mj.cmd('ifconfig %s %s netmask 255.255.255.0' % (mj_dev, get_mec_ip(j)))
             # 添加mec服务器之间的链路
-            net.addLink(mi, mj, cls=TCLink, 
-                                params1={'ip': get_mec_ip_p(i), 'bw': MM_BW, 'delay': MM_DELAY}, 
+            net.addLink(mi, mj, cls=TCLink,
+                                params1={'ip': get_mec_ip_p(i), 'bw': MM_BW, 'delay': MM_DELAY},
                                 params2={'ip': get_mec_ip_p(j), 'bw': MM_BW, 'delay': MM_DELAY})
             # 添加到特定主机的路由
             mi.cmd('sudo route add -host %s dev %s' % (get_mec_ip(j), mi_dev))
@@ -70,8 +71,8 @@ def mec2dc(net, M):
         mec.cmd('ifconfig %s %s netmask 255.255.255.0' % (m_dev, get_mec_ip(i)))
         cloud.cmd('ifconfig %s %s netmask 255.255.255.0' % (c_dev, c_ip))
         # 创建mec服务器和数据中心之间的链路
-        net.addLink(mec, cloud, cls=TCLink, 
-                                params1={'ip': get_mec_ip_p(i), 'bw': MD_BW, 'delay': MD_DELAY}, 
+        net.addLink(mec, cloud, cls=TCLink,
+                                params1={'ip': get_mec_ip_p(i), 'bw': MD_BW, 'delay': MD_DELAY},
                                 params2={'ip': c_ip_prefix, 'bw': MD_BW, 'delay': MD_DELAY})
         # 添加直接路由
         mec.cmd('sudo route add -host %s dev %s' % (c_ip, m_dev))

@@ -1,9 +1,10 @@
 import cv2
 import time
+from constant import *
 
 def extract_one_frame():
     # 读取视频文件
-    videoCapture = cv2.VideoCapture("./data/conference.mp4")
+    videoCapture = cv2.VideoCapture(VIDEO_FILE)
 
     # 读帧
     success, frame = videoCapture.read()
@@ -18,5 +19,5 @@ def extract_one_frame():
         if i >= threshold: break
         success, frame = videoCapture.read()
     # cv2.imwrite('./data/image.jpg', frame) # 只抽取2ms 加上写文件32ms
-    t2 = time.perf_counter() 
+    t2 = time.perf_counter()
     # print((t2 - t1) * 1000)

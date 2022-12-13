@@ -1,9 +1,6 @@
+from constant import *
+
 # 计算时延节省量
-
-CLOUD_RES_FILE = './data/10.0.%s.2_cloud.txt'
-KSP_RES_FILE = './data/10.0.%s.2_ksp.txt'
-
-M = 3
 
 def cal_profit(filename):
     res = 0
@@ -19,7 +16,7 @@ def wc_count(file_name):
     out = subprocess.getoutput("wc -l %s" % file_name)
     return int(out.split()[0])
 
-def main():    
+def main():
     cloud_res = 0
     ksp_res = 0
     cnt = 0

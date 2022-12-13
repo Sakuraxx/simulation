@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #coding=utf-8
- 
+
 from flask import Flask, request, jsonify
 import json
 import optparse
@@ -8,25 +8,19 @@ import random
 import requests
 import time
 from extractFrame import *
- 
+from constant import *
+
 parser = optparse.OptionParser()
 parser.add_option('-i', dest='ip', default='')
 parser.add_option('-p', dest='port', type='int', default=15005)
-parser.add_option('-c', dest='cacheMode') 
+parser.add_option('-c', dest='cacheMode')
 (options, args) = parser.parse_args()
 
 LOCAL_IP = options.ip
-CLOUD_IP = "10.0.200.254"
 CACHE_MODE = options.cacheMode
-CLOUD_CACHE = "cloud"
 
-_1KB = 1024
-_1MB = 1024 * 1024
-TILE_SIZE = _1KB
 
-CACHE_JSON = './data/cache.json'
-
-# 生成指定大小比例的数据 
+# 生成指定大小比例的数据
 def make_preidct_msg(p):
     nbytes = round(TILE_SIZE * p)
     t1 = time.perf_counter()
@@ -34,12 +28,12 @@ def make_preidct_msg(p):
     t2 = time.perf_counter()
     # with open('data.txt', 'a+') as f:
     #     f.write('Create data: %sB, %sms\n' % (nbytes, round((t2 - t1) * 1000)))
-    #     f.flush()    
+    #     f.flush()
     return x
 
 # 创建并启动Flask应用
 app = Flask(__name__)
-app.debug = True 
+app.debug = True
 @app.route('/query/', methods=['post'])
 def post_http():
     if not request.data:  # 检测是否有数据
@@ -49,7 +43,7 @@ def post_http():
     destIP = ""
     if CACHE_MODE == CLOUD_CACHE: # 直接向云端服务器请求
         destIP = CLOUD_IP
-    else: 
+    else:
         destIP = check_cacheTable(req_dat["tid"])
     if destIP == LOCAL_IP: destIP = ""
     if destIP == "":
@@ -67,7 +61,7 @@ def fetch_from_other_MEC(dat, ip):
 
 # 查看缓存表，确定请求路径
 def check_cacheTable(tid):
-    destIP = "" 
+    destIP = ""
     with open(CACHE_JSON, 'r') as load_f:
         load_dict = json.load(load_f)
         hostIPs = load_dict[tid]
@@ -96,21 +90,4 @@ def retrieve_from_local(dat):
     return dat
 
 if __name__ == '__main__':
-    # app.run(host='127.0.0.1', port=5000)
     app.run(host=LOCAL_IP, port=options.port)
-
-"""
-包含MEC之间通信
-[Client] 10.0.0.2
-[Client] http://10.0.0.1:15005/query/
-[Client] Len:1024B Time:43ms
-[Client] Len:1024B Time:27ms
-[Client] Len:1024B Time:21ms
-
-不包含MEC之间通信
-[Client] 10.0.0.2
-[Client] http://10.0.0.1:15005/query/
-[Client] Len:1024B Time:12ms
-[Client] Len:1024B Time:8ms
-[Client] Len:1024B Time:9ms
-"""

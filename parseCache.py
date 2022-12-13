@@ -3,14 +3,8 @@
 # {"1": ["10.0.200.254"], "2": ["10.0.200.254"]}
 
 import json
+from constant import *
 
-N = 200
-M = 3
-
-CACHE_TXT = './data/ksp_cache_10_0.txt'
-MEC_IP = '10.0.%s.1'
-CACHE_JSON = './data/cache.json'
-CLOUD_IP = '10.0.200.254'
 
 cache_arr = [[0 for j in range(M)] for i in range(N)]
 

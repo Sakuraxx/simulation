@@ -1,11 +1,6 @@
 # txt 数据格式 mid tid pre_num fail_num
 import json
-
-P_PATH = './data'
-CLIENT_IP = '10.0.%s.2'
-DN_FILE = 'dn_10_1.txt'
-N = 200
-M = 3
+from constant import *
 
 pred_dn = {}
 fail_dn = {}
@@ -19,8 +14,6 @@ with open('%s/%s' % (P_PATH, DN_FILE)) as dn_file:
         fields = line.split(" ")
         pred_dn[CLIENT_IP % fields[0]].append((fields[1], fields[2]))
         fail_dn[CLIENT_IP % fields[0]].append((fields[1], fields[3]))
-
-
 
 for j in range(M):
     TOT_REQ = 20

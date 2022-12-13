@@ -8,8 +8,7 @@ import time
 from myTopo import MECTopo
 from myTopo import *
 import os
-
-SINGAL_FILE = './data/signal.txt'
+from constant import *
 
 def main():
     lg.setLogLevel('info')
