@@ -23,7 +23,7 @@ def show_reqs():
 for mode in CACHE_MODE:
     print(mode)
     cache = [[0 for i in range(N)] for j in range(M)]
-    filename = './data/ori_cache/%s_cache_10_0.txt' % mode
+    filename = './data/ori_cache/%s_cache_10_9.txt' % mode
     with open(filename, 'r') as f:
         for line in f.readlines():
             x = line.split(' ')

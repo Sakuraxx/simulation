@@ -1,5 +1,5 @@
 M = 3
-N = 100
+N = 200
 PERIOD = 1 # 1s
 TOT_P = 10
 T = 10 # 轮数
@@ -23,7 +23,7 @@ MD_BW = _1MB_TOPO * 1000
 # 延迟
 UM_DELAY = '1ms'
 MM_DELAY = '2ms'
-MD_DELAY = '50ms'
+MD_DELAY = '20ms'
 
 # 解析缓存文件
 CACHE_MODE = ('ksp', 'distributed', 'selfTop', 'mixco')

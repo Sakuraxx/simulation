@@ -12,11 +12,13 @@ void init_payment() {
             ori_payment += 1LL * global_cost[ind];  // 处理时延无法省略
         }
     }
+    printf("totReq: %lld", tot_req);
 }
 
 double cal_rate(ll res, string mode) {
-    double ori_delay = (double)ori_payment / tot_req;
-    double after_delay = ((double)ori_payment - res) / tot_req;
+    double ori_delay = (double)ori_payment / tot_req; // 之前的平均时延
+    double after_delay = ((double)ori_payment - res) / tot_req; // 现在的平均时延
+    // printf("OriDelay: %.2lf ms, AfterDelay: %.2lf ms, ", ori_delay, after_delay);
     printf("%s: %.2lf ms, Rate: %.2lf%%\n", mode.c_str(), after_delay, 100.0 - after_delay / ori_delay * 100);
     return after_delay;
 }
@@ -113,7 +115,7 @@ int main() {
 
     int reqPerSecd = 1;
     period = 10; // 秒
-    N = 100, M = 3, K = 1;
+    N = 200, M = 3, K = 1;
     ZIPF_alpha = 1.5; // 值越大每台MEC服务器上内容的流行度越相似，值越小每台MEC服务器上内容的流行度越不同
     ZIPF_range = reqPerSecd * period; // d[j][i] <= range
     freopen("in.cfg", "r", stdin);
@@ -121,14 +123,15 @@ int main() {
     init(); // 设置MEC存储大小、tile流行度、局部和全局收益
 
     // 以1sec为周期
-    int T = 1;
+    int T = 10;
     for(int i = 0; i < T; i++) {
         times = i;
         // 重新计算局部收益和全局收益
-        recal_local_global_profit(1);
+        recal_local_global_profit(1); // 当前的时间间隔为1
         printf("init() Time: %ld ms\n", clock() - t1);
-        init_payment();
+        init_payment(); // 原始需要的代价
         add_data();
+        printf("\n");
     }
 
     // 测试速度

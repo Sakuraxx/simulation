@@ -67,6 +67,13 @@ ll get_self_top_profit() {
         }
     }
     save_cache_to_file(1);
+    // printf("selfTop cache\n");
+    // for(int j = 0; j < M; j++) {
+    //     for(int i = 0; i < N; i++) {
+    //         printf("%d ", cache[j][i]);
+    //     }
+    //     printf("\n");
+    // }
     return cal_profile();
 }
 
@@ -112,6 +119,16 @@ ll get_distributed_profit() {
         cache[mec_ind][tile_ind] = true;
     }
     if(!mixco) save_cache_to_file(2);
+
+    // if(!mixco) {
+    //     printf("dis cache\n");
+    //     for(int j = 0; j < M; j++) {
+    //         for(int i = 0; i < N; i++) {
+    //             printf("%d ", cache[j][i]);
+    //         }
+    //         printf("\n");
+    //     }
+    // }
     return cal_profile();
 }
 
@@ -155,15 +172,25 @@ ll get_mixco_profit() {
     }
     mixco = false;
 
-    // 若收益和dis一样，则将缓存分布等同于dis
-    if(res_profile == dis_profit) {
-        get_distributed_profit();
-        for(int j = 0; j < M; j++) {
-            for(int i = 0; i < N; i++) {
-                mixco_cache[j][i] = cache[j][i];
-            }
+    // 最低收益为dis收益
+    get_distributed_profit();
+    for(int j = 0; j < M; j++) {
+        int cnt = 0;
+        for(int i = 0; i < N; i++) {
+            mixco_cache[j][i] = max(mixco_cache[j][i], cache[j][i]);
+            cnt += mixco_cache[j][i];
+            if(cnt >= storages[j]) break;
         }
     }
+
+    // printf("mixco cache\n");
+    // for(int j = 0; j < M; j++) {
+    //     for(int i = 0; i < N; i++) {
+    //         printf("%d ", mixco_cache[j][i]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("%lld %lld\n", res_profile, dis_profit);
 
     save_cache_to_file(3);
     return res_profile;

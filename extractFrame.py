@@ -15,17 +15,18 @@ def extract_one_frame():
     j = 0
     threshold = 2
     t1 = time.perf_counter()
-    
+
     # while success:
     #     i = i + 1
     #     if i >= threshold: break
     #     success, frame = videoCapture.read()
     # # cv2.imwrite('./data/image.jpg', frame) # 只抽取2ms 加上写文件32ms
-    
-    s = random.randint(3, 4)
+
+    # s = random.randint(3, 4)
+    s = 3
     time.sleep(s * 0.001)
-    
+
     # t2 = time.perf_counter()
     # print((t2 - t1) * 1000)
-    
+
 extract_one_frame()

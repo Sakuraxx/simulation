@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 M = 3
-N = 100
+N = 200
 PERIOD = 10
 
 arr_p = [[0 for i in range(N)] for j in range(M)] # 预测请求

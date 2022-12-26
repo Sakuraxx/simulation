@@ -68,18 +68,17 @@ def run(mode, t):
 def printCurMode(mode, t):
      print('-'*20)
      print(mode, t)
-     print('-'*20)  
+     print('-'*20)
 
 if __name__ == '__main__':
     # modes = [c for c in CACHE_MODE]
     # modes.append('cloud')
     # modes = ['selfTop', 'mixco', 'cloud']
-    modes = ['selfTop', 'distributed']
+    modes = ['cloud']
     for mode in modes:
-        for t in range(T - 1):
+        for t in range(0, T - 1):
             printCurMode(mode, t)
             run(mode, t)
             time.sleep(2)
 
 
-        

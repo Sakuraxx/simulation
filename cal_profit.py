@@ -23,7 +23,7 @@ if __name__ == '__main__':
     for mode in modes:
         res[mode] = []
         reqCnt[mode] = []
-        for t in range(1, T):
+        for t in range(3, 4):
             delay = 0
             cnt = 0
             for j in range(M):
@@ -39,14 +39,15 @@ if __name__ == '__main__':
     c_arr = np.array(res['cloud']) / np.array(reqCnt['cloud'])
     for mode in modes:
         arr = np.array(res[mode])
-        ans = c_arr - arr / reqCnt[mode]
+        avgDelay = arr / reqCnt[mode]
+        ans = c_arr - avgDelay
         ans = np.round(ans, decimals=0) # 平均时延节省量
         ans = np.round(ans / c_arr * 100, decimals=0) # 平均时延节省率
         res[mode] = list(ans)
-    
+        print(' ', mode, avgDelay)
     print('Total Saved Delay Rate:', res)
     print('=' * 30)
-    
+
     res_json_file = RES_JSON_FILE % PERIOD
     with open(res_json_file, 'w') as file:
             json.dump(res, file)

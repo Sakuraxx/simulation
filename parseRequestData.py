@@ -3,6 +3,7 @@ import json
 from constant import *
 
 def parse_dn_file(t):
+    cnt = 0
     pred_dn = {}
     fail_dn = {}
 
@@ -26,12 +27,14 @@ def parse_dn_file(t):
             for k in range(int(req[1])):
                 reqs.append({'tid': req[0], 'type': 2})
 
-        print(IP)
-        print(len(reqs))
+        # print(IP)
+        # print(len(reqs))
         req_file = REQ_FILE % (IP, PERIOD, t)
         with open(req_file, 'w') as req_file:
             json.dump(reqs, req_file)
+        cnt += len(reqs)
+    return cnt
 
 if __name__ == '__main__':
     for t in range(T):
-        parse_dn_file(t)
+        print(t, parse_dn_file(t))

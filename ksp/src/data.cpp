@@ -75,7 +75,7 @@ void generate_tile_param(int ind) {
 
 void set_MEC_size(int j) {
     int gb = K;
-    int unit = 100;
+    int unit = 1000;
     storages[j] = gb * unit / BLOCK_SIZE;
     // printf("MEC[%d]  Space: %d GB  Ki: %d.\n", j, gb, storages[j]);
 }
