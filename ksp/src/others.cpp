@@ -21,7 +21,7 @@ ll cal_profile() {
     for(int i = 0; i < N; i++) {
         bool flag = false;
         for(int j = 0; j < M; j++) {
-            if(cache[j][i]) { 
+            if(cache[j][i]) {
                 ans += local_profit[j][i].val;
                 flag = true;
             }
@@ -35,9 +35,9 @@ ll cal_profile() {
 void save_cache_to_file(int alog) {
     fstream cache_file;
     string filename;
-    if(alog == 1) filename = "../data/selfTop_cache_";
-    else if (alog == 2) filename = "../data/distributed_cache_";
-    else if (alog == 3) filename = "../data/mixco_cache_";
+    if(alog == 1) filename = "../data/ori_cache/selfTop_cache_";
+    else if (alog == 2) filename = "../data/ori_cache/distributed_cache_";
+    else if (alog == 3) filename = "../data/ori_cache/mixco_cache_";
     stringstream s;
     s << filename << period << "_" << times << ".txt";
     cache_file.open(s.str(), ios::out);  // write,清空再写入
@@ -47,7 +47,7 @@ void save_cache_to_file(int alog) {
             for(int i = 0; i < N; i++) {
                 if(alog == 1 || alog == 2)
                     cache_file << j << " " << i << " " << cache[j][i] << "\n";
-                else 
+                else
                     cache_file << j << " " << i << " " << mixco_cache[j][i] << "\n";
             }
         }
@@ -87,7 +87,7 @@ ll get_distributed_profit() {
         dis_remain[j] = mixco ? dis_sz[j] : storages[j];
         fill(cache[j], cache[j] + N, false);
     }
-    
+
     // 所有内容存在收益最高的 MEC 上
     for(int i = 0; i < N; i++) {
         dis_cnt[i] = 0;
