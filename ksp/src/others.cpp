@@ -111,7 +111,7 @@ ll get_distributed_profit() {
         dis_remain[mec_ind]--;
         cache[mec_ind][tile_ind] = true;
     }
-    save_cache_to_file(2);
+    if(!mixco) save_cache_to_file(2);
     return cal_profile();
 }
 
@@ -128,7 +128,8 @@ ll get_mixco_profit() {
     }
 
     // self-top
-    ll res_profile = get_distributed_profit();
+    ll dis_profit = get_distributed_profit();
+    ll res_profile = dis_profit;
     ll self_profile = 0;
     while(true) {
         ll mx_profile = 0;
@@ -146,13 +147,24 @@ ll get_mixco_profit() {
             mixco_cache[j][arr[j][--arr_ind[j]].second] = false;
             dis_sz[j]++;
         }
-        if(mx_profile <= res_profile) break;
+        if(mx_profile < res_profile) break;
         res_profile = mx_profile;
         self_profile += arr[mx_ind][arr_ind[mx_ind]].first.val;
         mixco_cache[mx_ind][arr[mx_ind][arr_ind[mx_ind]++].second] = true;
         dis_sz[mx_ind]--;
     }
     mixco = false;
+
+    // 若收益和dis一样，则将缓存分布等同于dis
+    if(res_profile == dis_profit) {
+        get_distributed_profit();
+        for(int j = 0; j < M; j++) {
+            for(int i = 0; i < N; i++) {
+                mixco_cache[j][i] = cache[j][i];
+            }
+        }
+    }
+
     save_cache_to_file(3);
     return res_profile;
 }
