@@ -195,20 +195,18 @@ void output_lp_file() {
 }
 
 void recal_local_global_profit(int t) {
-    // 读取文件得到mdn数组
-    int m = 0, n = 0, m_dn = 0;
+    // 读取指定时段的流行度文件
+    int m = 0, n = 0;
+    int predict_dn = 0;
+    int fail_dn = 0;
     stringstream s;
     s << "../data/dn/" << t << "/" << times;
     string str1(s.str());
     freopen(str1.c_str(), "r", stdin);
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < M; j++) {
-            cin >> m >> n >> m_dn;
-            // printf("%d %d %d \n", m, n, m_dn);
-            int predict_dn = 0;
-            int fail_dn = 0;
-            if(m_dn > 0) predict_dn = m_dn;
-            if(m_dn < 0) fail_dn = -m_dn;
+            cin >> m >> n >> predict_dn >> fail_dn;
+            // printf("%d %d %d %d\n", m, n, predict_dn, fail_dn);
 
             // 50% ~ 60%
             int send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.5);
