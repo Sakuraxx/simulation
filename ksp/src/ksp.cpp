@@ -12,7 +12,7 @@ int cnt[MAXN];
 pair<Node, int> mec_nvalue[MAXM][MAXN];
 int nvalue_ind[MAXM];
 
-__gnu_pbds::priority_queue<pair<Node, int>, greater<pair<Node, int> >, 
+__gnu_pbds::priority_queue<pair<Node, int>, greater<pair<Node, int> >,
                            pairing_heap_tag> mec_pq[MAXM][MAXM];
 int remain[MAXM];
 bool contain[MAXM][MAXN];
@@ -209,7 +209,7 @@ long long fsp() {
     // 记下KSP的缓存分布
     fstream ksp_cache;
     stringstream s;
-    s << "../data/ksp_cache_" << period << "_" << times << ".txt";
+    s << "../data/ori_cache/ksp_cache_" << period << "_" << times << ".txt";
     ksp_cache.open(s.str(), ios::out);  // write,清空再写入
     if (ksp_cache.is_open())
     {

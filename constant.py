@@ -26,7 +26,7 @@ MD_DELAY = '50ms'
 
 # 解析缓存文件
 CACHE_MODE = ('ksp', 'distributed', 'selfTop', 'mixco')
-CACHE_TXT = './data/%s_cache_%s_%s.txt'
+CACHE_TXT = './data/ori_cache/%s_cache_%s_%s.txt'
 CACHE_JSON = './data/cache/%s_cache_%s_%s.json' # ksp_cache_10_0.json
 
 # 解析请求文件
