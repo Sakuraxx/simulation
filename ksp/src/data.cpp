@@ -75,7 +75,8 @@ void generate_tile_param(int ind) {
 
 void set_MEC_size(int j) {
     int gb = K;
-    storages[j] = gb * 1000 / BLOCK_SIZE;
+    int unit = 100;
+    storages[j] = gb * unit / BLOCK_SIZE;
     // printf("MEC[%d]  Space: %d GB  Ki: %d.\n", j, gb, storages[j]);
 }
 
@@ -203,11 +204,13 @@ void recal_local_global_profit(int t) {
     s << "../data/dn/" << t << "/" << times;
     string str1(s.str());
     freopen(str1.c_str(), "r", stdin);
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < M; j++) {
+    ll totReq = 0;
+    for(int j = 0; j < M; j++) {
+        for(int i = 0; i < N; i++) {
             cin >> m >> n >> predict_dn >> fail_dn;
             dn[n][m] = predict_dn + fail_dn; // 更新流行度
             // printf("%d %d %d %d\n", m, n, predict_dn, fail_dn);
+            totReq += dn[n][m];
 
             // 50% ~ 60%
             int send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.5);
@@ -232,4 +235,5 @@ void recal_local_global_profit(int t) {
             global_cost[i] += fail_dn * (c_user_to_mec + c_mec_to_cloud + PROCESS_DELAY);
         }
     }
+    printf("==Peroid: %d, Turn %d, TotReq: %lld==\n", t, times, totReq);
 }
