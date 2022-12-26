@@ -17,6 +17,7 @@ def cal_tot_delay(filename):
 if __name__ == '__main__':
     modes = [c for c in CACHE_MODE]
     modes.append('cloud')
+    # modes = ['ksp', 'cloud']
     res = {}
     reqCnt = {}
     for mode in modes:
@@ -32,8 +33,8 @@ if __name__ == '__main__':
             res[mode].append(delay)
             reqCnt[mode].append(cnt)
 
-    print(res)
-    print(reqCnt)
+    print('Total Delay:', res)
+    print('Total Requests:', reqCnt)
 
     c_arr = np.array(res['cloud']) / np.array(reqCnt['cloud'])
     for mode in modes:
@@ -42,8 +43,10 @@ if __name__ == '__main__':
         ans = np.round(ans, decimals=0) # 平均时延节省量
         ans = np.round(ans / c_arr * 100, decimals=0) # 平均时延节省率
         res[mode] = list(ans)
-
-    print(res)
-
-    with open(ANS_FILE, 'w') as file:
+    
+    print('Total Saved Delay Rate:', res)
+    print('=' * 30)
+    
+    res_json_file = RES_JSON_FILE % PERIOD
+    with open(res_json_file, 'w') as file:
             json.dump(res, file)

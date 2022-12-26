@@ -1,6 +1,9 @@
 from constant import *
 import json
 
+M = 3
+N = 200
+
 def show_reqs():
     for t in range(2):
         reqs = [[0 for i in range(N)] for j in range(M)]
@@ -20,7 +23,7 @@ def show_reqs():
 for mode in CACHE_MODE:
     print(mode)
     cache = [[0 for i in range(N)] for j in range(M)]
-    filename = './data/%s_cache_1_2.txt' % mode
+    filename = './data/ori_cache/%s_cache_10_0.txt' % mode
     with open(filename, 'r') as f:
         for line in f.readlines():
             x = line.split(' ')

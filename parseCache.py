@@ -8,7 +8,7 @@ from constant import *
 def parse_cache_file(cache_mode, t):
 
     cache_arr = [[0 for j in range(M)] for i in range(N)]
-    cache_txt = CACHE_TXT % (cache_mode, PERIOD, t)
+    cache_txt = CACHE_TXT % (cache_mode, TOT_P, t)
     with open(cache_txt, 'r') as file:
         for line in file.readlines():
             fields = line.split(" ")

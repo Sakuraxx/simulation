@@ -121,7 +121,7 @@ int main() {
     init(); // 设置MEC存储大小、tile流行度、局部和全局收益
 
     // 以1sec为周期
-    int T = 10;
+    int T = 1;
     for(int i = 0; i < T; i++) {
         times = i;
         // 重新计算局部收益和全局收益

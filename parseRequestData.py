@@ -28,7 +28,7 @@ def parse_dn_file(t):
 
         print(IP)
         print(len(reqs))
-        req_file ='%s/%s_%s_%s.json' % (REQ_ROOT, IP, PERIOD, t)
+        req_file = REQ_FILE % (IP, PERIOD, t)
         with open(req_file, 'w') as req_file:
             json.dump(reqs, req_file)
 

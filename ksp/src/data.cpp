@@ -206,6 +206,7 @@ void recal_local_global_profit(int t) {
     for(int i = 0; i < N; i++) {
         for(int j = 0; j < M; j++) {
             cin >> m >> n >> predict_dn >> fail_dn;
+            dn[n][m] = predict_dn + fail_dn; // 更新流行度
             // printf("%d %d %d %d\n", m, n, predict_dn, fail_dn);
 
             // 50% ~ 60%
