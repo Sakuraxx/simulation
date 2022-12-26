@@ -32,7 +32,7 @@ void add_data() {
     pa.push_back((double)ori_payment / tot_req);
     printf("\nN: %d, M: %d, K: %d\n", N, M, K);
     printf("Total Request: %lld\nBefore Delay: %lld ms\nAvg Delay: %.2f ms\n", tot_req, ori_payment, (double)ori_payment / tot_req);
-    
+
     res.push_back(cal_rate(fsp(), "KSP"));
     res.push_back(cal_rate(get_self_top_profit(), "Self Top"));
     res.push_back(cal_rate(get_distributed_profit(), "Distributed"));
@@ -107,21 +107,25 @@ int main() {
     // t1 = clock();
     // cal_rate(get_mixco_profit(), "Mixco");
     // printf("Mixco Time: %ld ms\n", clock() - t1);
-    
+
     // 初始化 util.cpp 的随机值
     // N = 2e5, M = 25, K = 2000;
 
     int reqPerSecd = 1;
-    int T = 10;
     period = 10; // 秒
-    N = 200, M = 3, K = 1;
-    ZIPF_alpha = 1.5;
+    N = 100, M = 3, K = 1;
+    ZIPF_alpha = 1.5; // 值越大每台MEC服务器上内容的流行度越相似，值越小每台MEC服务器上内容的流行度越不同
     ZIPF_range = reqPerSecd * period; // d[j][i] <= range
     freopen("in.cfg", "r", stdin);
+    init_para(); // 设置tile大小、时延等参数
+    init(); // 设置MEC存储大小、tile流行度、局部和全局收益
+
+    // 以1sec为周期
+    int T = 10;
     for(int i = 0; i < T; i++) {
         times = i;
-        init_para(); // 设置tile大小、时延等参数
-        init(); // 设置MEC存储大小、tile流行度、局部和全局收益
+        // 重新计算局部收益和全局收益
+        recal_local_global_profit(1);
         printf("init() Time: %ld ms\n", clock() - t1);
         init_payment();
         add_data();

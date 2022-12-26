@@ -33,11 +33,11 @@ int f_dn[MAXN][MAXM];
 
 void generate_tile_param(int ind) {
     // int dn_base = zipf(ZIPF_alpha, ZIPF_range);
-    
+
     // 预取: 初始化 tile ind 在所有 mec 上的流行分布
     for(int j = 0; j < MAXM; j++) {
         // dn[ind][j] = dn_base + 10 * rand_val(0);
-        
+
         // 0% ~ 10%
         // dn[ind][j] *= rand_val(0);
         dn[ind][j] = zipf(ZIPF_alpha, ZIPF_range);
@@ -50,11 +50,11 @@ void generate_tile_param(int ind) {
 
         // 50% ~ 60%
         int send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.5);
-        int c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND + 
+        int c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND +
                             CLOUD_PROPAGATION_DELAY + 100 * rand_val(0);  // MEC 到云端
         int c_mec_to_mec   = QUEUING_DELAY + 1000 * send_sz / MEC_BAND; // MEC 到 MEC
         int c_user_to_mec  = QUEUING_DELAY + 1000 * send_sz / USER_BAND; // 用户到 MEC
-        
+
         // 预测时延
         local_profit[j][ind].val = predict_dn * c_mec_to_mec;
         global_profit[ind].val = predict_dn * (c_mec_to_cloud - c_mec_to_mec);
@@ -62,7 +62,7 @@ void generate_tile_param(int ind) {
 
         // 10% ~ 20%
         send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.1);
-        c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND + 
+        c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND +
                           CLOUD_PROPAGATION_DELAY + 100 * rand_val(0);  // MEC 到云端
         c_mec_to_mec   = QUEUING_DELAY + 1000 * send_sz / MEC_BAND; // MEC 到 MEC
         c_user_to_mec  = QUEUING_DELAY + 1000 * send_sz / USER_BAND; // 用户到 MEC
@@ -97,7 +97,7 @@ void init() {
     // 记录下流量分布
     fstream dn_file;
     stringstream s;
-    s << "../data/dn_" << period << "_" << times << ".txt";
+    s << "../data/dn_" << period << ".txt";
     dn_file.open(s.str(), ios::out);  // write,清空再写入
     if (dn_file.is_open())
     {
@@ -140,7 +140,7 @@ void output_lp_file() {
         for(int m = 0; m < M; m++) {
             out_flows += " - f2" + to_string(n) + to_string(m);
         }
-        
+
         fprintf(fp, "\nc%d: %s\n%s = 0\n", cnt++, in_flows.c_str(), out_flows.c_str());
     }
 
@@ -158,7 +158,7 @@ void output_lp_file() {
         }
     }
     fprintf(fp, "\nc%d: %s\n%s = 0\n", cnt++, out_flows.c_str(), in_flows.c_str());
-    
+
     for(int m = 0; m < M; m++) {
         in_flows = "";
         for(int n = 0; n < N; n++) {
@@ -192,4 +192,45 @@ void output_lp_file() {
     fprintf(fp, "End\n");
 
     fclose(fp);
+}
+
+void recal_local_global_profit(int t) {
+    // 读取文件得到mdn数组
+    int m = 0, n = 0, m_dn = 0;
+    stringstream s;
+    s << "../data/dn/" << t << "/" << times;
+    string str1(s.str());
+    freopen(str1.c_str(), "r", stdin);
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < M; j++) {
+            cin >> m >> n >> m_dn;
+            // printf("%d %d %d \n", m, n, m_dn);
+            int predict_dn = 0;
+            int fail_dn = 0;
+            if(m_dn > 0) predict_dn = m_dn;
+            if(m_dn < 0) fail_dn = -m_dn;
+
+            // 50% ~ 60%
+            int send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.5);
+            int c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND +
+                                CLOUD_PROPAGATION_DELAY + 100 * rand_val(0);  // MEC 到云端
+            int c_mec_to_mec   = QUEUING_DELAY + 1000 * send_sz / MEC_BAND; // MEC 到 MEC
+            int c_user_to_mec  = QUEUING_DELAY + 1000 * send_sz / USER_BAND; // 用户到 MEC
+
+            local_profit[j][i].val = predict_dn * c_mec_to_mec;
+            global_profit[i].val = predict_dn * (c_mec_to_cloud - c_mec_to_mec);
+            global_cost[i] = predict_dn * (c_user_to_mec + c_mec_to_cloud);
+
+            // 10% ~ 20%
+            send_sz = BLOCK_SIZE * (rand_val(0) / 10 + 0.1);
+            c_mec_to_cloud = QUEUING_DELAY + 1000 * send_sz / MEC_BAND +
+                            CLOUD_PROPAGATION_DELAY + 100 * rand_val(0);  // MEC 到云端
+            c_mec_to_mec   = QUEUING_DELAY + 1000 * send_sz / MEC_BAND; // MEC 到 MEC
+            c_user_to_mec  = QUEUING_DELAY + 1000 * send_sz / USER_BAND; // 用户到 MEC
+
+            local_profit[j][i].val += fail_dn * c_mec_to_mec;
+            global_profit[i].val += fail_dn * (c_mec_to_cloud - c_mec_to_mec);
+            global_cost[i] += fail_dn * (c_user_to_mec + c_mec_to_cloud + PROCESS_DELAY);
+        }
+    }
 }

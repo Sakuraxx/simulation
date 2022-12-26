@@ -2,7 +2,7 @@
 #define NODE_INCLUDED 1
 struct Node {
     int val;
-    
+
     Node(int X = 0)
         :val(X) {}
 
@@ -84,6 +84,7 @@ void init();
 void init_para();
 void set_MEC_size(int);
 void output_lp_file();
+void recal_local_global_profit(int);
 
 /**
 Answer: 2851785 2512225
