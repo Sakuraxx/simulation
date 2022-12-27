@@ -1,8 +1,8 @@
 M = 3
 N = 200
-PERIOD = 1 # 1s
+PERIOD = 4 # x sec
 TOT_P = 10
-T = 10 # 轮数
+T = 2 # 轮数
 
 CLOUD_IP = "10.0.200.254"
 MEC_IP = '10.0.%s.1'
@@ -26,7 +26,7 @@ MM_DELAY = '2ms'
 MD_DELAY = '20ms'
 
 # 解析缓存文件
-CACHE_MODE = ('ksp', 'distributed', 'selfTop', 'mixco')
+CACHE_MODE = ('distributed', 'selfTop', 'ksp', 'mixco')
 CACHE_TXT = './data/ori_cache/%s_cache_%s_%s.txt'
 CACHE_JSON = './data/cache/%s_cache_%s_%s.json' # ksp_cache_10_0.json
 
@@ -44,3 +44,4 @@ DELAY_RES_FILE = './data/res/10.0.%s.2_%s_%s_%s.txt' # 10.0.0.2_ksp_10_1.txt
 
 ANS_FILE = './data/ans/ans.json'
 RES_JSON_FILE = './data/res/peroid_%s.json' # peroid_1.json
+AVG_RES_FILE = './data/res/peroid__avg_%s.json' # peroid_avg_1.json
