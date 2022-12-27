@@ -124,6 +124,7 @@ int main() {
 
     // 以1sec为周期
     int T = 10;
+    period = 1;
     for(int i = 0; i < T; i++) {
         times = i;
         // 重新计算局部收益和全局收益
