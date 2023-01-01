@@ -30,18 +30,25 @@ print('Client %s start...' % UIP)
 
 res_arr = []
 # 发起请求
-for send_dat in reqs:
-    t1 = time.perf_counter()
-    r = requests.post(url, data=json.dumps(send_dat)) # 发送到服务端
-    t2 = time.perf_counter()
-    dat_stream = r.content.decode('utf-8')
-    # print(dat_stream)
-    res_dat = json.loads(dat_stream)
-    interval = round((t2 - t1) * 1000) # 请求时间间隔 单位ms
-    print('[Client %s] Len:%sB Time:%sms' % (UIP, res_dat['len'], interval))
-    res_arr.append('%s %s %s\n' % (res_dat['tid'], res_dat['len'], interval))
-    time.sleep(0.5)
-    # break
+cnt = 0
+with open('./data/%s.txt' % UIP, 'w') as f:
+    for send_dat in reqs:
+        cnt += 1
+        t1 = time.perf_counter()
+        r = requests.post(url, data=json.dumps(send_dat)) # 发送到服务端
+        t2 = time.perf_counter()
+        dat_stream = r.content.decode('utf-8')
+        # print(dat_stream)
+        res_dat = json.loads(dat_stream)
+        interval = round((t2 - t1) * 1000) # 请求时间间隔 单位ms
+        print('[Client %s] Len:%sB Time:%sms' % (UIP, res_dat['len'], interval))
+        res_arr.append('%s %s %s\n' % (res_dat['tid'], res_dat['len'], interval))
+        time.sleep(0.01)
+        # break
+        f.write(str(send_dat))
+        f.write(' ')
+        f.write('[Client %s] Len:%sB Time:%sms\n' % (UIP, res_dat['len'], interval))
+        f.flush()
 
 print('Total Requests: ', len(reqs))
 
