@@ -6,14 +6,14 @@ random.seed(0)
 
 M = 3
 N = 200
-PERIOD = 10
+PERIOD = 40
 
 def get_dn_sec():
     arr_p = [[0 for i in range(N)] for j in range(M)] # 预测请求
     arr_f = [[0 for i in range(N)] for j in range(M)] # 补救请求
 
     # 以最小时间单位来分割dn生成请求
-    dn_file = './data/dn_10.txt'
+    dn_file = './data/dn_%s.txt' % PERIOD
     with open(dn_file, 'r') as f:
         for line in f.readlines():
             x = line.split(' ')
@@ -81,38 +81,45 @@ def get_dn_between_t1_t2(dn_sec, t1, t2, j, i):
         fn += dn_sec[k][j][i][1]
     return (pn, fn)
 
-
+# 生成突发流量
 def gen_dn_in_gap():
     dn_sec = np.zeros((PERIOD, M, N, 2))
     for t in range(PERIOD):
         for j in range(M):
             for i in range(N):
-                if t % 2 == 0 and i % 2 == 0:
-                    dn_sec[t][j][i][0] = 1
-                else:
-                    dn_sec[t][j][i][0] = 1
-                n = random.randint(1, 10)
-                if n % 2 == 0:
-                     dn_sec[t][j][i][0] = 0
+                if i >= 100 and t <= 20: continue # 前20秒不请求id大于100的内容
+                if i < 100 and t >= 20: continue # 后20秒不请求id小于100的内容
+                if i % 5 != 0:
+                    n = random.randint(0, 10)
+                    if n > 8:
+                        dn_sec[t][j][i][0] = 1
+                elif t % 5 == 0: # 指定内容在指定时刻被请求
+                    dn_sec[t][j][i][0] = 2
+                    n = random.randint(0, 5)
+                    if n % 3 == 0:
+                        dn_sec[t][j][i][0] = 0
+
     return dn_sec
 
 if __name__ == '__main__':
-    
+
+    # 1sec为一个周期，每个周期的的请求量逐次递减
     # dn_sec = get_dn_sec()
     dn_sec = gen_dn_in_gap()
     print_req_num_in_diff_peroid(dn_sec, 1)
     print('totReq', dn_sec.sum())
-    # 1sec为一个周期，每个周期的的请求量逐次递减
-    # gen_dn_per_P(dn_sec, 1)
-
-    # dn = gen_dn_on_given_turn(dn_sec, 2, 5)
-    # print_req_num_in_diff_peroid(dn, 5)
-    # gen_dn_per_P(dn, 5)
-
 
     # 打乱请求，每个周期的请求量不定
     # dn_sec = random_change_the_req_of_diff_peroid(dn_sec)
     # print_req_num_in_diff_peroid(dn_sec, 1)
+    # print('totReq', dn_sec.sum())
+
+    dn = gen_dn_on_given_turn(dn_sec, 2, 10)
+    print_req_num_in_diff_peroid(dn, 10)
+    gen_dn_per_P(dn, 10)
+    print('totReq', dn.sum())
+
+
     # gen_dn_per_P(dn_sec, 1)
     # print('totReq', dn_sec.sum())
 

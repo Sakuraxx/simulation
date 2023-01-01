@@ -114,7 +114,7 @@ int main() {
     // N = 2e5, M = 25, K = 2000;
 
     int reqPerSecd = 1;
-    period = 10; // 秒
+    period = 20; // 秒
     N = 200, M = 3, K = 1;
     ZIPF_alpha = 1.5; // 值越大每台MEC服务器上内容的流行度越相似，值越小每台MEC服务器上内容的流行度越不同
     ZIPF_range = reqPerSecd * period; // d[j][i] <= range
@@ -123,12 +123,12 @@ int main() {
     init(); // 设置MEC存储大小、tile流行度、局部和全局收益
 
     // 以1sec为周期
-    int T = 10;
-    period = 1;
+    int T = 2;
+    period = 10;
     for(int i = 0; i < T; i++) {
         times = i;
         // 重新计算局部收益和全局收益
-        recal_local_global_profit(1); // 当前的时间间隔为1
+        recal_local_global_profit(period); // 当前的时间间隔为peroid
         printf("init() Time: %ld ms\n", clock() - t1);
         init_payment(); // 原始需要的代价
         add_data();
